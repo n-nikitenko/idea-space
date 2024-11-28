@@ -1,0 +1,15 @@
+# Общие исключения
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+.idea/
+
+# Исключить Node.js и Python виртуальные окружения, если они есть в корне
+node_modules/
+env/
+venv/
+
+# Исключить артефакты Docker и CI
+.docker/
+*.conf
