@@ -1,0 +1,224 @@
+swagger: '2.0'
+info:
+  title: Idea-Space API
+  description: API ...
+  contact:
+    email: ninanineliya@gmail.com
+  license:
+    name: BSD License
+  tags:
+  - name: Аутентификация
+    description: Эндпоинты для работы с токенами JWT
+  - name: Пользователи
+    description: CRUD операции для пользователей
+  version: v1
+basePath: /api
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+security:
+- Bearer: []
+paths:
+  /users/:
+    get:
+      operationId: users_list
+      description: Получение списка пользователей
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+      tags:
+      - Пользователи
+    post:
+      operationId: users_create
+      description: Регистрация пользователя
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - Пользователи
+    parameters: []
+  /users/login/:
+    post:
+      operationId: users_login_create
+      description: Получение токена. Этот эндпоинт позволяет получить JWT токен на
+        основе учетных данных пользователя.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/TokenObtainPair'
+      responses:
+        '200':
+          description: Успех
+          schema:
+            $ref: '#/definitions/TokenObtainPair'
+        '401':
+          description: Неверные учетные данные
+      tags:
+      - Аутентификация
+    parameters: []
+  /users/token/refresh/:
+    post:
+      operationId: users_token_refresh_create
+      description: Обновление токена. Этот эндпоинт позволяет обновить JWT токен,
+        предоставленный ранее.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/TokenRefresh'
+      responses:
+        '200':
+          description: Успех
+          schema:
+            $ref: '#/definitions/TokenRefresh'
+        '401':
+          description: Токен недействителен
+      tags:
+      - Аутентификация
+    parameters: []
+  /users/{id}/:
+    get:
+      operationId: users_read
+      description: Получение данных пользователя по id
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - Пользователи
+    put:
+      operationId: users_update
+      description: Обновление данных пользователя по id
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - Пользователи
+    patch:
+      operationId: users_partial_update
+      description: Частичное обновление данных пользователя по id
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - Пользователи
+    delete:
+      operationId: users_delete
+      description: Удаление данных пользователя по id
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - Пользователи
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this Пользователь.
+      required: true
+      type: integer
+definitions:
+  User:
+    required:
+    - username
+    - password
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      username:
+        title: Имя пользователя
+        description: Обязательное поле. Не более 150 символов. Только буквы, цифры
+          и символы @/./+/-/_.
+        type: string
+        pattern: ^[\w.@+-]+$
+        maxLength: 150
+        minLength: 1
+      password:
+        title: Пароль
+        type: string
+        maxLength: 128
+        minLength: 1
+      first_name:
+        title: Имя
+        type: string
+        maxLength: 150
+      last_name:
+        title: Фамилия
+        type: string
+        maxLength: 150
+      email:
+        title: Адрес электронной почты
+        type: string
+        format: email
+        maxLength: 254
+  TokenObtainPair:
+    required:
+    - username
+    - password
+    type: object
+    properties:
+      username:
+        title: Username
+        type: string
+        minLength: 1
+      password:
+        title: Password
+        type: string
+        minLength: 1
+  TokenRefresh:
+    required:
+    - refresh
+    type: object
+    properties:
+      refresh:
+        title: Refresh
+        type: string
+        minLength: 1
+      access:
+        title: Access
+        type: string
+        readOnly: true
+        minLength: 1

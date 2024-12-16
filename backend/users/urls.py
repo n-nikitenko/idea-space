@@ -7,14 +7,21 @@ from users.views import UserTokenObtainPairView, UserViewSet, UserTokenRefreshVi
 app_name = UsersConfig.name
 
 router = SimpleRouter()
-router.register(r"users", UserViewSet, basename="users")
+users_prefix = "users"
+router.register(users_prefix, UserViewSet, basename="users")
 
-urlpatterns = [
+
+# Определяем подмаршруты для аутентификации
+auth_patterns = [
     path(
         "login/",
         UserTokenObtainPairView.as_view(),
         name="token_obtain_pair",
     ),
     path("token/refresh/", UserTokenRefreshView.as_view(), name="token_refresh"),
+]
+
+urlpatterns = [
     path("", include(router.urls)),
+    path(f"{users_prefix}/", include(auth_patterns)),
 ]

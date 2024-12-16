@@ -18,6 +18,7 @@ elasticsearch-dsl = {version = "^8.16.0", extras = ["search"]}
 python-dotenv = "^1.0.1"
 drf-yasg = "^1.21.8"
 djangorestframework-simplejwt = "^5.3.1"
+django-cors-headers = "^4.6.0"
 
 
 [tool.poetry.group.dev.dependencies]

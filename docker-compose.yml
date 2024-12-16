@@ -1,6 +1,7 @@
 services:
   backend:
     build:
+      network: "host"
       context: ./backend
       dockerfile: Dockerfile
     command: poetry run python manage.py runserver 0.0.0.0:8000
@@ -19,15 +20,21 @@ services:
 
   frontend:
     build:
+      network: host
       context: ./frontend
       dockerfile: Dockerfile
-    command: npm run dev
+    command: npm run dev -- -o
+    tmpfs:
+      - '/tmp/nitro'
     ports:
       - "3000:3000"
     volumes:
       - ./frontend:/frontend
-    depends_on:
-      - backend
+      - node_modules:/frontend/node_modules
+      - _nuxt:/frontend/.nuxt
+      - _output:/frontend/output
+#    depends_on:
+#      - backend
     tty: true
 
   db:
@@ -49,3 +56,6 @@ volumes:
   pg-data:
   static-data:
   media-data:
+  node_modules:
+  _nuxt:
+  _output:

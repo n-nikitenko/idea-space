@@ -13,3 +13,8 @@ venv/
 # Исключить артефакты Docker и CI
 .docker/
 *.conf
+
+.nuxt/
+.output/
+
+/.env

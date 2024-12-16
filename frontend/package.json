@@ -8,28 +8,31 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "generate-api": "rm -rf ./api ; openapi -i ./openapi/openapi.json -o ./api",
+    "update-openapi": "wget -qSO ./openapi/openapi.json http://backend:8000/swagger.json"
   },
   "dependencies": {
-    "@primevue/themes": "^4.2.4",
-    "normalize.css": "^8.0.1",
-    "nuxt": "^3.14.1592",
-    "primeicons": "^7.0.0",
-    "primevue": "^4.2.4",
-    "type-fest": "^4.28.1",
+    "@primevue/themes": "*",
+    "normalize.css": "*",
+    "nuxt": "3.12.4",
+    "primeicons": "*",
+    "primevue": "*",
+    "type-fest": "*",
     "vue": "^3",
-    "vue-router": "^4.5.0"
+    "vue-router": "*"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "^0.7.2",
-    "@pinia/nuxt": "^0.7.0",
-    "@primevue/nuxt-module": "^4.2.4",
-    "@vueuse/core": "^11.3.0",
-    "@vueuse/nuxt": "^11.3.0",
-    "eslint": "^9.15.0",
-    "nuxt-lodash": "^2.5.3",
-    "pinia": "^2.2.6",
-    "typescript": "<5.7.2",
-    "vue-tsc": "^2.1.10"
+    "@nuxt/eslint-config": "*",
+    "@pinia/nuxt": "*",
+    "@primevue/nuxt-module": "*",
+    "@vueuse/core": "*",
+    "@vueuse/nuxt": "*",
+    "eslint": "*",
+    "nuxt-lodash": "*",
+    "openapi-typescript-codegen": "*",
+    "pinia": "*",
+    "typescript": "*",
+    "vue-tsc": "*"
   }
 }

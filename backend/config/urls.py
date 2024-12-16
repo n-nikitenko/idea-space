@@ -39,11 +39,13 @@ schema_view = get_schema_view(
     permission_classes=[
         permissions.AllowAny,
     ],
+    url="",
 )
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("users/", include("users.urls", "users")),
+    path("swagger.json", schema_view.without_ui(cache_timeout=0), name="schema-json"),
+    path("api/", include("users.urls", "users")),
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
     ),

@@ -1,4 +1,10 @@
-node_modules
+/.nuxt
+/.output
+/node_modules
+
 npm-debug.log
 .DS_Store
 .idea/
+
+.gitignore
+README.md
