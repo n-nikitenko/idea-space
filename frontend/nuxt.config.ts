@@ -36,9 +36,9 @@ export default defineNuxtConfig({
             VERSION: '1.1.1'
         }
     },
-app: {
+    app: {
         head: {
-            title: 'Контроль конфигураций',
+            title: 'Idea Space',
         }
     },
 
