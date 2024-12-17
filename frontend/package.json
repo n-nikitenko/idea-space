@@ -15,12 +15,12 @@
   "dependencies": {
     "@primevue/themes": "*",
     "normalize.css": "*",
-    "nuxt": "3.12.4",
+    "nuxt": "3.13.2",
     "primeicons": "*",
     "primevue": "*",
     "type-fest": "*",
-    "vue": "^3",
-    "vue-router": "*"
+    "vue": "latest",
+    "vue-router": "latest"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "*",

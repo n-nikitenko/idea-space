@@ -1,5 +1,5 @@
 # Используем Node.js как базовый образ
-FROM node:18-alpine
+FROM node
 
 # Устанавливаем рабочую директорию
 WORKDIR /frontend
