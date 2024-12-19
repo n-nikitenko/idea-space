@@ -38,18 +38,38 @@ export class Service {
     /**
      * Получение токена. Этот эндпоинт позволяет получить JWT токен на основе учетных данных пользователя.
      * @param data
-     * @returns TokenObtainPair Успех
+     * @returns TokenRefresh Успех
      * @throws ApiError
      */
     public static usersLoginCreate(
         data: TokenObtainPair,
-    ): CancelablePromise<TokenObtainPair> {
+    ): CancelablePromise<TokenRefresh> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/users/login/',
             body: data,
             errors: {
                 401: `Неверные учетные данные`,
+            },
+        });
+    }
+    /**
+     * Выход из системы
+     *
+     * @param data
+     * @returns any Успех
+     * @throws ApiError
+     */
+    public static usersLogout(
+        data: TokenRefresh,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/users/logout/',
+            body: data,
+            errors: {
+                400: `Неверные данные`,
+                401: `Пользователь не авторизован`,
             },
         });
     }

@@ -1,12 +1,13 @@
 <template>
-  <div>
-    <TestButton/>
-    <div>Тесn</div>
-  </div>
+  <Button @click="onClick">Press</Button>
+  <NuxtPage class="flex-1"
+  />
+  <Toast position="bottom-right"/>
 </template>
 <script setup lang="ts">
 
 import {type User} from "~/api";
+import {callApi} from "~/utils/API"
 
 const newUser: User = {
   username: 'newuser123',
@@ -15,14 +16,16 @@ const newUser: User = {
 };
 
 // Пример вызова API
-onMounted(async () => {
+const onClick = async () => {
+  const response = await callApi(() => API.Service.usersList())
   try {
+    console.log("hello")
 
-    const response = await API.Service.usersCreate(newUser)
 
-    console.log('User created successfully', response)
+
+    console.log('Users list getted', response)
   } catch (error) {
-    console.error('Error creating user', error);
+    console.error('Error get userList', error);
   }
-})
+}
 </script>

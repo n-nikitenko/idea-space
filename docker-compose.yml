@@ -5,18 +5,22 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: poetry run python manage.py runserver 0.0.0.0:8000
+    command:  sh -c "poetry run python manage.py migrate && poetry run python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/code
       - static-data:/backend/static
       - media-data:/backend/media
+    environment:
+      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-config.settings}
     env_file:
       - .env
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_started
     tty: true
 
   frontend:
@@ -50,6 +54,47 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  redis:
+    networks:
+      - idea-space
+    image: redis:6-alpine
+    container_name: redis
+    ports:
+      - "6380:6379"
+    command: redis-server
+
+  celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: sh -c "poetry run celery -A config worker --loglevel=info"
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    volumes:
+      - ./backend:/app
+    networks:
+      - idea-space
+    env_file:
+      - .env
+
+  celery-beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: sh -c "poetry run celery -A config beat --loglevel=info"
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    volumes:
+      - ./backend:/app
+    networks:
+      - idea-space
+    env_file:
+      - .env
 
 
 volumes:

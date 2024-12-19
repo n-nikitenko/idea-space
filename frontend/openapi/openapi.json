@@ -71,9 +71,30 @@ paths:
         '200':
           description: Успех
           schema:
-            $ref: '#/definitions/TokenObtainPair'
+            $ref: '#/definitions/TokenRefresh'
         '401':
           description: Неверные учетные данные
+      tags:
+      - Аутентификация
+    parameters: []
+  /users/logout/:
+    post:
+      operationId: users_logout
+      description: |
+        Выход из системы
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/TokenRefresh'
+      responses:
+        '205':
+          description: Успех
+        '401':
+          description: Пользователь не авторизован
+        '400':
+          description: Неверные данные
       tags:
       - Аутентификация
     parameters: []

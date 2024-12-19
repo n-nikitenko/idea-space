@@ -17,7 +17,8 @@
     "normalize.css": "*",
     "nuxt": "3.13.2",
     "primeicons": "*",
-    "primevue": "*",
+    "primevue": "4.2.4",
+    "tailwindcss-primeui": "^0.3.4",
     "type-fest": "*",
     "vue": "latest",
     "vue-router": "latest"
@@ -32,6 +33,7 @@
     "nuxt-lodash": "*",
     "openapi-typescript-codegen": "*",
     "pinia": "*",
+    "postcss-import": "^16.1.0",
     "typescript": "*",
     "vue-tsc": "*"
   }

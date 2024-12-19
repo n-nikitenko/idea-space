@@ -29,15 +29,22 @@ export default defineNuxtConfig({
         'normalize.css/normalize.css',
 
         'primeicons/primeicons.css',
+        '~/assets/styles/tailwind.css',
+        '~/assets/styles/base.css',
     ],
 
     modules: ['@primevue/nuxt-module', '@vueuse/nuxt', 'nuxt-lodash', '@pinia/nuxt'],
 
     primevue: {
         options: {
-            theme: {
-                preset: Aura
-            }
+            theme: 'none'
+        }
+    },
+    postcss: {
+        plugins: {
+            'postcss-import': {},
+            tailwindcss: {},
+            autoprefixer: {}
         }
     },
 

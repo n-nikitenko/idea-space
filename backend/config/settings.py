@@ -44,8 +44,10 @@ INSTALLED_APPS = [
     "drf_yasg",
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "users",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -141,8 +143,10 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": False,
 }
 
 SWAGGER_SETTINGS = {
@@ -153,7 +157,6 @@ SWAGGER_SETTINGS = {
     "TAGS_SORTER": "alpha",
     "DEFAULT_MODEL_RENDERING": "example",
 }
-
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -171,3 +174,56 @@ CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',  # Разрешить заголовок authorization для токенов
 ]
+
+REDIS_HOST = os.getenv("REDIS_HOST")
+REDIS_PORT = os.getenv("REDIS_PORT")
+REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
+
+# Celery Beat settings
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+
+# set the celery broker url
+CELERY_BROKER_URL = REDIS_URL
+
+CELERYD_HIJACK_ROOT_LOGGER = False
+
+CELERY_RESULT_BACKEND = REDIS_URL
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_BEAT_SCHEDULE = {
+    "task-clear-blacklist-tokens": {
+        "task": "users.tasks.clear_blacklist_tokens",
+        "schedule": timedelta(days=1),
+    },
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'celery_tasks.log'),
+            'formatter': 'verbose',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'celery': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
