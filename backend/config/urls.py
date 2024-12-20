@@ -33,6 +33,7 @@ schema_view = get_schema_view(
                 "description": "Эндпоинты для работы с токенами JWT",
             },
             {"name": "Пользователи", "description": "CRUD операции для пользователей"},
+            {"name": "Страницы", "description": "CRUD операции для страниц"},
         ],
     ),
     public=True,
@@ -46,6 +47,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("swagger.json", schema_view.without_ui(cache_timeout=0), name="schema-json"),
     path("api/", include("users.urls", "users")),
+    path("api/", include("pages.urls", "pages")),
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
     ),

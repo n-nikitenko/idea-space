@@ -46,7 +46,7 @@ services:
     env_file:
       - .env
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "5433:${POSTGRES_PORT:-5432}"
     volumes:
       - pg-data:/var/lib/postgresql/data
     healthcheck:

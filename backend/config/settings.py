@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "users",
     "django_celery_beat",
+    "pages"
 ]
 
 MIDDLEWARE = [
